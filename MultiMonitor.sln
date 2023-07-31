@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiMonitor", "MultiMonitor\MultiMonitor.csproj", "{79B26C23-352E-4D6B-985F-6E4350385BCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiMonitorServer", "MultiMonitorServer\MultiMonitorServer.csproj", "{AF77F622-EB5C-4891-91D8-2AD20AF9548C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79B26C23-352E-4D6B-985F-6E4350385BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79B26C23-352E-4D6B-985F-6E4350385BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79B26C23-352E-4D6B-985F-6E4350385BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79B26C23-352E-4D6B-985F-6E4350385BCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF77F622-EB5C-4891-91D8-2AD20AF9548C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF77F622-EB5C-4891-91D8-2AD20AF9548C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF77F622-EB5C-4891-91D8-2AD20AF9548C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF77F622-EB5C-4891-91D8-2AD20AF9548C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD76FC15-84DE-4B71-A1FF-C2D2604C7632}
+	EndGlobalSection
+EndGlobal
