@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -24,30 +25,50 @@ namespace MultiMonitorServer
         private const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
         private const uint MOUSEEVENTF_RIGHTUP = 0x0010;
 
-        public TcpListener TcpListener{ get; set; }
+        public UdpClient udpServer { get; set; }
 
         public Server()
         {
-            this.TcpListener = new TcpListener(7000);
-            this.TcpListener.Start();
+            this.udpServer = new UdpClient(7000);
         }
 
         public void RunServer()
         {
-            var client = this.TcpListener.AcceptTcpClient();
-            var ns = client.GetStream();
-            var buffer = new byte[1024];
+            //var client = this.TcpListener.AcceptTcpClient();
+            //var ns = client.GetStream();
+            //var buffer = new byte[1024];
+            //while (true)
+            //{
+            //    ns.Read(buffer, 0, buffer.Length);
+            //    var msg = Encoding.ASCII.GetString(buffer);
+
+            //    string pattern = @"(\{[^{}]*\})";
+            //    MatchCollection matches = Regex.Matches(msg, pattern);
+
+            //    foreach (Match match in matches)
+            //    {
+            //        HandleIncommingMessage(match.Value);
+            //    }
+            //}
+
             while (true)
             {
-                ns.Read(buffer, 0, buffer.Length);
-                var msg = Encoding.ASCII.GetString(buffer);
+                Thread.Sleep(1);
+                IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                byte[] receivedData = udpServer.Receive(ref remoteEndPoint);
 
+                Console.WriteLine(receivedData.Length);
+
+                string msg = Encoding.ASCII.GetString(receivedData);
+
+                Console.WriteLine($"Received: {msg} from {remoteEndPoint}");
                 string pattern = @"(\{[^{}]*\})";
                 MatchCollection matches = Regex.Matches(msg, pattern);
 
                 foreach (Match match in matches)
                 {
-                    HandleIncommingMessage(match.Value);
+                    Console.WriteLine(match.Value);
+                    //HandleIncommingMessage(match.Value);
                 }
             }
         }

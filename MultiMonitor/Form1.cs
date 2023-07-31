@@ -1,5 +1,6 @@
 using MultiMonitor.Models;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace MultiMonitor
 {
@@ -16,6 +17,7 @@ namespace MultiMonitor
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern short GetAsyncKeyState(int nVirtKey);
 
+        public int mouseMoveTick { get; set; }
 
 
         [StructLayout(LayoutKind.Sequential)]
@@ -50,6 +52,8 @@ namespace MultiMonitor
             this.Client = new Client();
             this.SendToServer = false;
 
+            this.mouseMoveTick = 0;
+
             this.KeyboardHook.SetHook();
             this.MouseHook.SetHook();
         }
@@ -71,6 +75,8 @@ namespace MultiMonitor
                 }
 
                 if (!this.SendToServer) return;
+
+                this.mouseMoveTick++;
 
                 Client.SendMessage(new Keyboard { KeyStroke = key.ToString() });
             }
@@ -98,10 +104,16 @@ namespace MultiMonitor
                         Client.SendMessage(new Mouse { Button = "WM_RBUTTONUP" });
                         break;
                     case WM_MOUSEMOVE:
-                        MSLLHOOKSTRUCT hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(response.lParam, typeof(MSLLHOOKSTRUCT));
-                        int x = hookStruct.pt.X;
-                        int y = hookStruct.pt.Y;
-                        Client.SendMessage(new MouseMove { X = x, Y = y });
+                        this.mouseMoveTick++;
+
+                        if (this.mouseMoveTick > 30)
+                        {
+                            MSLLHOOKSTRUCT hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(response.lParam, typeof(MSLLHOOKSTRUCT));
+                            int x = hookStruct.pt.X;
+                            int y = hookStruct.pt.Y;
+                            Client.SendMessage(new MouseMove { X = x, Y = y });
+                            this.mouseMoveTick = 0;
+                        }
                         break;
                         //case WM_MOUSEWHEEL:
                         //    int rawDelta = (int)((response.lParam.ToInt32() >> 16) & 0xFFFF);

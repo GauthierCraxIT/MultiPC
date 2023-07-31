@@ -10,13 +10,11 @@ namespace MultiMonitor
 {
     public class Client
     {
-        public TcpClient _tcpClient { get; set; }
+        public UdpClient udpClient { get; set; }
         public List<string> _MessageQueue { get; set; }
         public Client()
         {
-            _tcpClient = new TcpClient();
-            _tcpClient.Connect("localhost", 7000);
-
+            udpClient = new UdpClient();
             _MessageQueue = new List<string>();
             Run();
         }
@@ -27,14 +25,11 @@ namespace MultiMonitor
             {
                 while (true)
                 {
-                    Thread.Sleep(1);
+                    await Task.Delay(1);
                     while (_MessageQueue.Count > 0)
                     {
-                        var stream = _tcpClient.GetStream();
-
                         var buffer = Encoding.ASCII.GetBytes(_MessageQueue[0]);
-                        await stream.WriteAsync(buffer, 0, buffer.Length);
-
+                        udpClient.Send(buffer, buffer.Length, "localhost", 7000);
                         _MessageQueue.RemoveAt(0);
                     }
                 }
